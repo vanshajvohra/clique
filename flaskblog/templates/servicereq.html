@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1 class="mb-3">Service Records by {{ user.username }} ({{ posts.total }})</h1>
+    <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + user.image_file) }}">
+    {% for post in posts.items %}
+        <article class="media content-section">
+          
+          <div class="media-body">
+                    
+
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-light">Posted on : {{ post.date_posted.strftime('%Y-%m-%d') }}</li>
+                <li class="list-group-item list-group-item-light">City : {{ post.city }}</li>
+                <li class="list-group-item list-group-item-light">Province : {{ post.province }}</li>
+                <li class="list-group-item list-group-item-light">Model     : {{ post.car_model}}</li>
+                <li class="list-group-item list-group-item-light">Make      : {{ post.car_make}}</li>
+                <li class="list-group-item list-group-item-light">Year of Purchase   : {{ post.purchase_year}}</li>
+                <li class="list-group-item list-group-item-light">Km Done   : {{ post.km_done}}</li>
+                <li class="list-group-item list-group-item-light">Dealership Last Visited   : {{ post.dealership}}</li>
+                <li class="list-group-item list-group-item-light">Date when Visited   : {{ post.date_last_visit}}</li>
+                <li class="list-group-item list-group-item-light">Reason    : {{ post.reason}}</li>
+            </ul>
+        </div>
+
+        </article>
+        
+        
+
+    {% endfor %}
+    {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+      {% if page_num %}
+        {% if posts.page == page_num %}
+          <a class="btn btn-info mb-4" href="{{ url_for('user_posts', username=user.username, page=page_num) }}">{{ page_num }}</a>
+        {% else %}
+          <a class="btn btn-outline-info mb-4" href="{{ url_for('user_posts', username=user.username, page=page_num) }}">{{ page_num }}</a>
+        {% endif %}
+      {% else %}
+        ...
+      {% endif %}
+    {% endfor %}
+{% endblock content %}
